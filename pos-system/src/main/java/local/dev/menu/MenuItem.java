@@ -8,18 +8,18 @@ import java.util.Set;
 import java.util.UUID;
 
 public class MenuItem {
-    private UUID id;
-    private String name;
-    private BigDecimal price;
-    private Category category;
-    private LocalTime availableFrom;
-    private LocalTime availableTo;
-    private LocalDate seasonalStart;
-    private LocalDate seasonalEnd;
-    private boolean kidsFriendly;
-    private boolean vegetarian;
-    private boolean highProtein;
-    private HashSet<Customization> customizations;
+    private final UUID id;
+    private final String name;
+    private final BigDecimal price;
+    private final Category category;
+    private final LocalTime availableFrom;
+    private final LocalTime availableTo;
+    private final LocalDate seasonalStart;
+    private final LocalDate seasonalEnd;
+    private final boolean kidsFriendly;
+    private final boolean vegetarian;
+    private final boolean highProtein;
+    private final HashSet<Customization> customizations;
 
     private MenuItem(Builder builder) {
         this.id = builder.id;
