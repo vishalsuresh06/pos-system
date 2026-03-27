@@ -34,7 +34,7 @@
         <version>3.13.0</version>
         <configuration>
           <testExcludes>
-            <exclude>**/concurrency/**</exclude>
+            <exclude>**/ConcurrencyTests*</exclude>
           </testExcludes>
         </configuration>
       </plugin>
@@ -43,7 +43,7 @@
         <version>3.5.2</version>
         <configuration>
           <excludes>
-            <exclude>**/concurrency/**</exclude>
+            <exclude>**/ConcurrencyTests*</exclude>
           </excludes>
         </configuration>
       </plugin>
