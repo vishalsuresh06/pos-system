@@ -1,5 +1,19 @@
 package local.dev.order;
 
+import java.math.BigDecimal;
+import java.nio.file.Path;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
+
 import local.dev.inventory.IngredientMap;
 import local.dev.inventory.InventoryManager;
 import local.dev.inventory.StockLevel;
@@ -8,16 +22,6 @@ import local.dev.menu.MenuItem;
 import local.dev.persistence.OrderStore;
 import local.dev.pricing.PricingEngine;
 import local.dev.pricing.TaxCalculator;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.io.TempDir;
-import java.math.BigDecimal;
-import java.nio.file.Path;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderManagerTest {
 
@@ -28,7 +32,7 @@ public class OrderManagerTest {
     private InventoryManager inventoryManager;
 
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         burger = new MenuItem.Builder("Big Burger", new BigDecimal("8.99"), Category.ENTREE).build();
 
         IngredientMap ingredientMap = new IngredientMap();
@@ -63,7 +67,8 @@ public class OrderManagerTest {
     @Test
     void submitOrder_insufficientStock_throws() {
         inventoryManager.getAllStock().get("patty").deduct(10); // deplete stock
-        assertThrows(IllegalStateException.class, () -> orderManager.submitOrder(buildSingleBurgerOrder()));
+        Exception exception = assertThrows(IllegalStateException.class, () -> orderManager.submitOrder(buildSingleBurgerOrder()));
+        assertNotNull(exception);
     }
 
     @Test
@@ -86,28 +91,31 @@ public class OrderManagerTest {
     void updateStatus_invalidTransition_throws() {
         Order order = orderManager.submitOrder(buildSingleBurgerOrder());
         // SUBMITTED -> COMPLETED is not a valid direct transition
-        assertThrows(IllegalStateException.class, () ->
+        Exception exception = assertThrows(IllegalStateException.class, () ->
             orderManager.updateStatus(order.getId(), OrderStatus.COMPLETED));
+        assertNotNull(exception);
     }
 
     @Test
     void updateStatus_cancelledOrder_cannotTransition() {
         Order order = orderManager.submitOrder(buildSingleBurgerOrder());
         orderManager.updateStatus(order.getId(), OrderStatus.CANCELLED);
-        assertThrows(IllegalStateException.class, () ->
+        Exception exception = assertThrows(IllegalStateException.class, () ->
             orderManager.updateStatus(order.getId(), OrderStatus.PREPARING));
+        assertNotNull(exception);
     }
 
     @Test
     void updateStatus_unknownOrderId_throws() {
-        assertThrows(NoSuchElementException.class, () ->
+        Exception exception = assertThrows(NoSuchElementException.class, () ->
             orderManager.updateStatus(UUID.randomUUID(), OrderStatus.PREPARING));
+        assertNotNull(exception);
     }
 
     @Test
     void getOrdersByStatus_returnsMatchingOnly() {
         Order a = orderManager.submitOrder(buildSingleBurgerOrder());
-        Order b = orderManager.submitOrder(buildSingleBurgerOrder());
+        orderManager.submitOrder(buildSingleBurgerOrder());
         orderManager.updateStatus(a.getId(), OrderStatus.PREPARING);
 
         assertEquals(1, orderManager.getOrdersByStatus(OrderStatus.PREPARING).size());

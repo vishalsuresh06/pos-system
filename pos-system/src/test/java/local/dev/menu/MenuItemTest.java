@@ -1,11 +1,15 @@
 package local.dev.menu;
 
-import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 public class MenuItemTest {
 
@@ -24,20 +28,23 @@ public class MenuItemTest {
 
     @Test
     void build_missingName_throws() {
-        assertThrows(IllegalStateException.class, () ->
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
             new MenuItem.Builder(null, new BigDecimal("8.99"), Category.ENTREE).build());
+        assertNotNull(exception);
     }
 
     @Test
     void build_missingPrice_throws() {
-        assertThrows(IllegalStateException.class, () ->
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
             new MenuItem.Builder("Burger", null, Category.ENTREE).build());
+        assertNotNull(exception);
     }
 
     @Test
     void build_missingCategory_throws() {
-        assertThrows(IllegalStateException.class, () ->
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
             new MenuItem.Builder("Burger", new BigDecimal("8.99"), null).build());
+        assertNotNull(exception);
     }
 
     @Test
