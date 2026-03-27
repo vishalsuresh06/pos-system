@@ -25,6 +25,29 @@
   </dependencies>
 
   <build>
+    <plugins>
+      <!-- Exclude concurrency prompt tests from the default build.
+           These tests require the implementation described in concurrency_prompt.md.
+           Once implemented, remove the excludes block below to run them. -->
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+        <configuration>
+          <testExcludes>
+            <exclude>**/concurrency/**</exclude>
+          </testExcludes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.2</version>
+        <configuration>
+          <excludes>
+            <exclude>**/concurrency/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
     <pluginManagement>
       <plugins>
         <plugin>

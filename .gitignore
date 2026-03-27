@@ -13,3 +13,7 @@ pos-system/data/
 # OS files
 .DS_Store
 Thumbs.db
+
+#Project Files
+concurrency_prompt.md
+pos-system/src/test/java/local/dev/concurrency/*
