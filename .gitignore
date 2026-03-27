@@ -16,6 +16,6 @@ Thumbs.db
 
 #Project Files
 concurrency_prompt.md
-pos-system/src/test/java/local/dev/concurrency/*
 f2p_test_coverage.md
 prompt.txt
+src/test/java/local/dev/ConcurrencyTests.java
